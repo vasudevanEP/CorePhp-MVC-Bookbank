@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2022 at 05:46 AM
+-- Generation Time: Jan 12, 2022 at 06:11 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -110,13 +110,16 @@ ALTER TABLE `authors`
 -- Indexes for table `books`
 --
 ALTER TABLE `books`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `author_id` (`author_id`);
 
 --
 -- Indexes for table `cron_history`
 --
 ALTER TABLE `cron_history`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `file` (`file`),
+  ADD KEY `filesize` (`filesize`);
 
 --
 -- AUTO_INCREMENT for dumped tables
