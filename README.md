@@ -40,6 +40,7 @@ http://localhost/Bookbank/index.php/books/getAll
 - `getAll` is the function you want
 - rest is passed as arguments to the function
 
+### Add / Update books through XML files
 **Update XML**
 Update the book XML file inside the `books` folder.
 ```xml
