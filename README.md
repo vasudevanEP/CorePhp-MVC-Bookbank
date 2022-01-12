@@ -41,7 +41,7 @@ http://localhost/Bookbank/index.php/books/getAll
 - rest is passed as arguments to the function
 
 **Update XML**
-Update the book XML file inside the books folder.
+Update the book XML file inside the `books` folder.
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <books>
