@@ -40,6 +40,29 @@ http://localhost/Bookbank/index.php/books/getAll
 - `getAll` is the function you want
 - rest is passed as arguments to the function
 
+**Update XML**
+Update the book XML file inside the books folder.
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+    <book>
+        <author>Holly Black</author>
+        <name>The Cruel Prince</name>
+    </book>
+    <book>
+        <author>Alex Michaelides</author>
+        <name>The Silent Patient</name>
+    </book>
+       
+</books>
+
+```
+
+**For Running Cron**
+```sh
+0 7 0 0 0 curl -s http://localhost/Bookbank/index.php/cron/getBooks
+```
+
 **Note**
 As the function name is `get_get` and not `get` the \_get means that want this function to handle the get requests.
 
