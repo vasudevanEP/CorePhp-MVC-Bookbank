@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+    <book>
+        <author>Isak Azimov</author>
+        <name>End of spirit</name>
+    </book>
+    <book>
+        <author>Pavel Vejinov</author>
+        <name>Book 1</name>
+    </book>
+    <book>
+        <author>Pavel Vejinov</author>
+        <name>Book 2</name>
+    </book>
+    <book>
+        <author>Pavel Vejinov</author>
+        <name>Book 3</name>
+    </book>
+    
+    <book>
+        <author>Isak Azimov</author>
+        <name>Book 4</name>
+    </book>
+    
+</books>
