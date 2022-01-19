@@ -80,7 +80,7 @@ INSERT INTO `books` (`id`, `name`, `author_id`, `added_date`) VALUES
 
 CREATE TABLE `cron_history` (
   `id` int(11) NOT NULL,
-  `file` varchar(11) CHARACTER SET utf8 DEFAULT NULL,
+  `file` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `filesize` int(11) DEFAULT NULL,
   `added_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
