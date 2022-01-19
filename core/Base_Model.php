@@ -2,6 +2,7 @@
 
 require_once(__DIR__.'/database/DB_Connection.php');
 //do not return anything if on error // now returning ERROR at blah blah
+global $params;
 class Base_Model{
 
 	function __construct(){
@@ -12,26 +13,25 @@ class Base_Model{
 	
 	function create($tableName,$insertWhat){
 
-		$sql='INSERT INTO '.$tableName.'(';
+		$sql='INSERT INTO '.$tableName.' (';
 		foreach ($insertWhat as $key => $value)
 			$sql .= $key.',';
 		
 		  $sql=rtrim($sql,',');
 		  $sql.=')';
-		$sql.=' VALUES(';
+		$sql.=' VALUES (';
 		
 		foreach ($insertWhat as $key => $value)
-			$sql .= '\''.$value.'\',';
+			$sql .= '?,';
 		
 		  $sql=rtrim($sql,',');
 		  $sql.=')';
 
 		  $sql=$this->appendSemicolon($sql);
-		echo $sql.'<br>';
-
-	   $result = $this->connection->query($sql);
+		// echo $sql.'<br>';
+		$result = $this->connection->prepare($sql)->execute(array_values($insertWhat));
 		if($result)
-			return $this->connection->insert_id;
+			return $this->connection->lastInsertId();
 		else
 			return 'Error at BASE_MODEL/create'; 
 	}
@@ -50,7 +50,8 @@ class Base_Model{
 	*/
 
 	function read($tableName,$args,$whereArgs=false,$whereLikeArgs=false,$join=array()){
-	
+		
+		$this->params = [];
 		  $sql='SELECT ';
 
 		 foreach ($args as $key => $value)
@@ -67,24 +68,36 @@ class Base_Model{
 			}
 			$sql .= ' ON '.$join['between'];
 		}
-
+		
 	   if($whereArgs)
-		$sql= $this->where($sql,$whereArgs);	
-
+	   $sql= $this->where($sql,$whereArgs);	
+		
 	   if($whereLikeArgs)
 	   {
+			
 		   $is_where = $whereArgs?true:false;
-		   $sql= $this->whereLike($sql,$whereLikeArgs,$is_where);	
-	   }
+		   $sql= $this->whereLike($sql,$whereLikeArgs,$is_where);
 
+		   $whereArgs = $whereArgs?array_merge($whereArgs,$whereLikeArgs):$whereLikeArgs;
+	   }
+	
 	   $sql=$this->appendSemicolon($sql);
 	//    echo $sql.'<br>';
 		$finale=array();
 
-		$result = $this->connection->query($sql);
-		if($result){
-		while($row=mysqli_fetch_assoc($result))
-			array_push($finale,$row);
+		$stmt = $this->connection->prepare($sql);
+		$stmt->execute(array_values($this->params));
+		$result =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+
+		if(is_array($result)){
+			
+			foreach($result as $row)
+			{
+				array_push($finale,$row);
+			}
+			
+		
 		return $finale;
 		}
 		else
@@ -95,14 +108,14 @@ class Base_Model{
     function update($tableName,$whatToSet,$whereArgs){
     	$sql='UPDATE '.$tableName .' SET ';
     	foreach ($whatToSet as $key => $value)
-    		$sql .= $key .'=\'' . $value . '\',';
+    		$sql .= $key .'= ? ,';
     	$sql=rtrim($sql,',');
 
 	   if($whereArgs)
 		$sql= $this->where($sql,$whereArgs);	
 		$sql=$this->appendSemicolon($sql);
-    	echo $sql.'<br>';
-	  $result = $this->connection->query($sql);
+    	// echo $sql.'<br>';
+	  $result = $this->connection->prepare($sql)->execute(array_values($whereArgs));
 
 		if($result)
 			return $result;
@@ -110,14 +123,15 @@ class Base_Model{
 			return 'Error at BASE_MODEL/update';
 
     }
+
    function delete($tableName,$whereArgs){
    		$sql='DELETE FROM '.$tableName;
 
 	   if($whereArgs)
 	   	$sql=$this->where($sql,$whereArgs);
 	   $sql=$this->appendSemicolon($sql);
-	   echo $sql.'<br>';
-	   $result = $this->connection->query($sql);
+	//    echo $sql.'<br>';
+	   $result = $this->connection->prepare($sql)->execute(array_values($whereArgs));
 
 		if($result)
 			return $result;
@@ -131,8 +145,9 @@ class Base_Model{
     	$sql.=' WHERE ';
     	
     	foreach ($whereArgs as $key => $value)
-    		$sql.=$key.' = \''.$value.'\' AND ';
+    	{	$sql.=$key.' = ? AND ';array_push($this->params,$value);}
     	$sql=rtrim($sql,'AND ');
+		
     	      	
     	return $sql;
     }
@@ -146,9 +161,9 @@ class Base_Model{
     	endif;
 
     	foreach ($whereArgs as $key => $value)
-    		$sql.=$key.' Like \'%'.$value.'%\' OR ';
+    	{	$sql.=$key.' Like ? OR ';array_push($this->params,'%'.$value.'%');}
     	$sql=rtrim($sql,'OR ');
-    	      	
+		
     	return $sql;
     }
 
