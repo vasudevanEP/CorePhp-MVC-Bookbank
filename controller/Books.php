@@ -16,7 +16,7 @@ function hello_get(){
 	
 }
 
-
+/* Get Books on page load */
 //http://localhost/index.php/books/getAll/
 function getAll_get(){
 	$books = $this->model->get_all();
@@ -24,25 +24,26 @@ function getAll_get(){
     $this->load_view('books_page',array('books'=>$books));
 }
 
-/* Searched Result */
+/*
+* Search the book based on post request 
+*/
 function getAll_post(){
 
     $search_term = '';
     if(isset($_POST))
     {
-        $search_term = $_POST['term'];
+        $search_term = $this->test_input($_POST['term']);
     }
     
-    
 	$books = $this->model->get_all($search_term);
-	// print_r($books);
 	// echo json_encode($books);
     $this->load_view('books_page',array('books'=>$books,'search_term'=>$search_term));
 }
 
+/* Get single book details. */
 //http://localhost/index.php/book/get/2/
 function get_get($id){
-
+    $id = $this->test_input($id);
 	$books = $this->model->get($id);
 	// echo json_encode($books);
     $this->load_view('book_page',array('books'=>$books));

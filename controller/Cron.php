@@ -14,6 +14,9 @@ class Cron{
         
     }
 
+    /*
+    * Get Books from the XML file 
+    */
     function getBooks_get()
     {
         $files = array_diff(scandir($this->cron_path), array('.', '..'));
@@ -31,15 +34,17 @@ class Cron{
                 {
                     foreach($get_books['book'] as $key=>$book)
                     {
+                        
                         $book_id = $this->create_update_book($book);
                     }
 
                     /* update the cron */
                     $this->model->create_update_cron($file,$filesize);
+                    echo $file.' has updated <br>';
                 }
                 else
                 {
-                    echo $file.' already exist';
+                    echo $file.' already exist <br>';
                 }
                
             }
@@ -47,6 +52,9 @@ class Cron{
         
     }
 
+    /*
+    * Parse the XML file and convert xml to array 
+    */
     public function parseXml($path,$file)
     {
         // Read entire file into string
@@ -63,6 +71,9 @@ class Cron{
         return $newArr;
     }
 
+    /* Create or Update books. If new books created and 
+    * if already exist update the books details. 
+    */
     public function create_update_book($book)
     {   
         if(!empty($book))
