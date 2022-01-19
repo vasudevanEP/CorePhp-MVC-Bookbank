@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Text books collections -->
 <books>
     <book>
-        <author>Holly Black</author>
-        <name>The Cruel Prince</name>
+        <author>Arthur Conan Doyle</author>
+        <name>The Five Orange Pips</name>
     </book>
     <book>
-        <author>Alex Michaelides</author>
-        <name>The Silent Patient</name>
+        <author>Arthur Conan Doyle</author>
+        <name>The Five Orange Pips</name>
     </book>
-       
+    <book>
+        <author>Arnold Bennett</author>
+        <name>Murder!</name>
+    </book>
 </books>
