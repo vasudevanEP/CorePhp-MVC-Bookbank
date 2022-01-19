@@ -23,7 +23,7 @@ git clone https://github.com/vasudevanEP/CorePhp-MVC-Bookbank.git
 
 Download it and place it in the `htdocs` equivalent of your server.
 
-Edit the `database.php` inside config folder to connect it to your sql database.
+Edit the `config/database.php` inside config folder to connect it to your sql database.
 
 
 
@@ -42,7 +42,7 @@ http://localhost/Bookbank/index.php/books/getAll
 
 ### Add / Update books through XML files
 **Update XML**
-Update the book XML file inside the `books` folder.
+Update the book XML file inside the `config/books` folder.
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <books>
