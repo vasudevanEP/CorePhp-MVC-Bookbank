@@ -9,6 +9,7 @@ class CronModel extends Base_Model{
 	function __construct(){
 		parent::__construct();
 
+        $this->params = [];
         $this->table = 'cron_history';
 	}
 
@@ -50,7 +51,6 @@ class CronModel extends Base_Model{
             
             /* Check the Book */
             $ch_book = $this->read('books',array('*'),array('author_id'=>$author_id),array('name'=>$book['name']));
-            // print_r($book);exit;
             /* Create New book */
             if(empty($ch_book))
             {
